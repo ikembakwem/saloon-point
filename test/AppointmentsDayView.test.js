@@ -128,7 +128,7 @@ describe("AppointmentsDayView", () => {
     expect(listChildren).toHaveLength(2);
   });
 
-  it("renders the time for each appointment", () => {
+  it("renders the time of each appointment", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
     const listChildren = document.querySelectorAll("li");
     expect(listChildren[0].textContent).toEqual("12:00");
@@ -159,5 +159,18 @@ describe("AppointmentsDayView", () => {
     const buttonTwo = document.querySelectorAll("button")[1];
     click(buttonTwo);
     expect(document.body.textContent).toContain("Peter");
+  });
+
+  it("adds toggled class to button when selected", () => {
+    render(<AppointmentsDayView appointments={twoAppointments} />);
+    const button = document.querySelectorAll("button")[1];
+    click(button);
+    expect(button.className).toContain("toggled");
+  });
+
+  it("does not add toggle class if button is not selected", () => {
+    render(<AppointmentsDayView appointments={twoAppointments} />);
+    const button = document.querySelectorAll("button")[1];
+    expect(button.className).not.toContain("toggled");
   });
 });
