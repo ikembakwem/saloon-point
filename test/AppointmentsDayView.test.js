@@ -1,17 +1,10 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
 import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
-import { act } from "react-dom/test-utils";
+import { initializeContainer, render, click } from "./reactTestExtensions";
 
 describe("Appointment", () => {
-  let container;
-
-  const render = (component) =>
-    act(() => createRoot(container).render(component));
-
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.replaceChildren(container);
+    initializeContainer();
   });
 
   it("renders the customer's first name", () => {
@@ -32,7 +25,6 @@ describe("Appointment", () => {
 });
 
 describe("AppointmentsDayView", () => {
-  let container;
   const today = new Date();
   const twoAppointments = [
     { startsAt: today.setHours(12, 0), customer: { firstName: "Nathan" } },
@@ -40,12 +32,8 @@ describe("AppointmentsDayView", () => {
   ];
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.replaceChildren(container);
+    initializeContainer();
   });
-
-  const render = (component) =>
-    act(() => createRoot(container).render(component));
 
   it("renders a div with the correct id", () => {
     render(<AppointmentsDayView appointments={[]} />);
@@ -93,7 +81,7 @@ describe("AppointmentsDayView", () => {
   it("renders another appointment when selected", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
     const buttonTwo = document.querySelectorAll("button")[1];
-    act(() => buttonTwo.click());
+    click(buttonTwo);
     expect(document.body.textContent).toContain("Peter");
   });
 });
