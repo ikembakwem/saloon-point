@@ -3,24 +3,51 @@ import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
 import { initializeContainer, render, click } from "./reactTestExtensions";
 
 describe("Appointment", () => {
+  const blankCustomer = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+  };
   beforeEach(() => {
     initializeContainer();
   });
 
-  it("renders the customer's first name", () => {
-    const customer = { firstName: "Nathan" };
-    const component = <Appointment customer={customer} />;
+  const appointmentTable = () =>
+    document.querySelector("#appointmentView > table");
 
-    render(<Appointment customer={customer} />);
-    expect(document.body.textContent).toContain("Nathan");
+  it("renders a table", () => {
+    render(<Appointment customer={blankCustomer} />);
+    expect(appointmentTable()).not.toBeNull();
   });
 
   it("renders the customer's first name", () => {
-    const customer = { firstName: "Peter" };
-    const component = <Appointment customer={customer} />;
-
+    const customer = { firstName: "Nathan" };
     render(<Appointment customer={customer} />);
-    expect(document.body.textContent).toContain("Peter");
+    expect(appointmentTable().textContent).toContain("Nathan");
+  });
+
+  it("renders another customer's first name", () => {
+    const customer = { firstName: "Peter" };
+    render(<Appointment customer={customer} />);
+    expect(appointmentTable().textContent).toContain("Peter");
+  });
+
+  it("renders customer last name", () => {
+    const customer = { lastName: "Mbakwem" };
+    render(<Appointment customer={customer} />);
+    expect(appointmentTable().textContent).toContain("Mbakwem");
+  });
+
+  it("renders another customer last name", () => {
+    const customer = { lastName: "Mmoneke" };
+    render(<Appointment customer={customer} />);
+    expect(appointmentTable().textContent).toContain("Mmoneke");
+  });
+
+  it("renders the customer phone number", () => {
+    const customer = { phoneNumber: "08130794172" };
+    render(<Appointment customer={customer} />);
+    expect(appointmentTable().textContent).toContain("08130794172");
   });
 });
 
