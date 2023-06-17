@@ -13,7 +13,7 @@ export const Appointment = ({
   startsAt,
 }) => (
   <div id="appointmentView">
-    <h3>Today&rsquo;s appointment at {appointmentTimeOfDay(startsAt)}</h3>
+    <h3>Today's appointment at {appointmentTimeOfDay(startsAt)}</h3>
     <table>
       <tbody>
         <tr>

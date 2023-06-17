@@ -49,6 +49,55 @@ describe("Appointment", () => {
     render(<Appointment customer={customer} />);
     expect(appointmentTable().textContent).toContain("08130794172");
   });
+
+  it("renders another customer phone number", () => {
+    const customer = { phoneNumber: "08039326647" };
+    render(<Appointment customer={customer} />);
+    expect(appointmentTable().textContent).toContain("08039326647");
+  });
+
+  it("renders the stylist name", () => {
+    render(<Appointment customer={blankCustomer} stylist="Shege" />);
+    expect(appointmentTable().textContent).toContain("Shege");
+  });
+
+  it("renders the salon service", () => {
+    render(<Appointment customer={blankCustomer} service="Cut" />);
+    expect(appointmentTable().textContent).toContain("Cut");
+  });
+
+  it("renders another salon service", () => {
+    render(<Appointment customer={blankCustomer} service="Retouch" />);
+    expect(appointmentTable().textContent).toContain("Retouch");
+  });
+
+  it("renders the appointment notes", () => {
+    render(
+      <Appointment customer={blankCustomer} notes="Very friendly client" />
+    );
+    expect(appointmentTable().textContent).toContain("Very friendly client");
+  });
+
+  it("renders other appointment notes", () => {
+    render(
+      <Appointment customer={blankCustomer} notes="Client has allergies" />
+    );
+    expect(appointmentTable().textContent).toContain("Client has allergies");
+  });
+
+  it("renders an h3 element", () => {
+    render(<Appointment customer={blankCustomer} />);
+    expect(document.querySelector("h3")).not.toBeNull();
+  });
+
+  it("renders the time as the heading", () => {
+    const today = new Date();
+    const timestamp = today.setHours(9, 0, 0);
+    render(<Appointment customer={blankCustomer} startsAt={timestamp} />);
+    expect(document.querySelector("h3").textContent).toEqual(
+      "Today's appointment at 09:00"
+    );
+  });
 });
 
 describe("AppointmentsDayView", () => {
