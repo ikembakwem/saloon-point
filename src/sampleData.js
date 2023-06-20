@@ -14,7 +14,7 @@ const today = new Date();
 const at = (hours) => today.setHours(hours, 0);
 
 const stylists = [0, 1, 2, 3, 4, 5, 6]
-  .map(() => faker.name.firstName())
+  .map(() => faker.person.firstName())
   .unique();
 
 const services = [
@@ -27,8 +27,8 @@ const services = [
 ];
 
 const generateFakeCustomer = () => ({
-  firstName: faker.name.firstName(),
-  lastName: faker.name.lastName(),
+  firstName: faker.person.firstName(),
+  lastName: faker.person.lastName(),
   phoneNumber: faker.phone.number("(###) ###-####"),
 });
 
