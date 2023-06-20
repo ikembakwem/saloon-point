@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from "react";
 import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
 import { initializeContainer, render, click } from "./reactTestExtensions";

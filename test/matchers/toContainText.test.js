@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import { toContainText } from "./toContainText";
 
 const stripTerminalColor = (text) => text.replace(/\x1B\[\d+m/g, "");
