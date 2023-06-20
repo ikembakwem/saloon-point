@@ -25,28 +25,76 @@ describe("CustomerForm", () => {
     expect(form()).not.toBeNull();
   });
 
-  it("renders the first name field as a text box", () => {
-    render(<CustomerForm original={blankCustomer} />);
+  describe("first name field", () => {
+    it("renders as a text box", () => {
+      render(<CustomerForm original={blankCustomer} />);
 
-    expect(field("firstName")).not.toBeNull();
-    expect(field("firstName").tagName).toEqual("INPUT");
-    expect(field("firstName").type).toEqual("text");
-  });
+      expect(field("firstName")).not.toBeNull();
+      expect(field("firstName").tagName).toEqual(
+        "INPUT"
+      );
+      expect(field("firstName").type).toEqual("text");
+    });
 
-  it("includes the existing value for the first name", () => {
-    const customer = { firstName: "Peter" };
+    it("includes the existing value", () => {
+      const customer = { firstName: "Peter" };
 
-    render(<CustomerForm original={customer} />);
+      render(<CustomerForm original={customer} />);
 
-    expect(field("firstName").value).toEqual("Peter");
-  });
+      expect(field("firstName").value).toEqual("Peter");
+    });
 
-  it("renders a label for the first name field", () => {
-    render(<CustomerForm original={blankCustomer} />);
+    it("renders a label", () => {
+      render(<CustomerForm original={blankCustomer} />);
 
-    const label = element("label[for=firstName]");
+      const label = element("label[for=firstName]");
 
-    expect(label).not.toBeNull();
+      expect(label).not.toBeNull();
+    });
+
+    it("assigns an id that matches the label's for attribute", () => {
+      render(<CustomerForm original={blankCustomer} />);
+
+      expect(field("firstName").id).toEqual(
+        "firstName"
+      );
+    });
+
+    it("saves existing first name when submitted", () => {
+      expect.hasAssertions();
+
+      const customer = { firstName: "Peter" };
+
+      render(
+        <CustomerForm
+          original={customer}
+          onSubmit={({ firstName }) =>
+            expect(firstName).toEqual("Peter")
+          }
+        />
+      );
+
+      const button = element("input[type=submit]");
+
+      click(button);
+    });
+
+    it("saves new value when submitted", () => {
+      expect.hasAssertions();
+
+      render(
+        <CustomerForm
+          original={blankCustomer}
+          onSubmit={({ firstName }) =>
+            expect(firstName).toEqual("Ikechukwu")
+          }
+        />
+      );
+
+      change(field("firstName"), "Ikechukwu");
+
+      click(submitButton());
+    });
   });
 
   it("renders 'First name' as the first name label content", () => {
@@ -57,35 +105,10 @@ describe("CustomerForm", () => {
     expect(label).toContainText("First name");
   });
 
-  it("assigns an id that matches the label's for attribute", () => {
-    render(<CustomerForm original={blankCustomer} />);
-
-    expect(field("firstName").id).toEqual("firstName");
-  });
-
   it("renders a submit button", () => {
     render(<CustomerForm original={blankCustomer} />);
 
     expect(submitButton()).not.toBeNull();
-  });
-
-  it("saves existing first name when submitted", () => {
-    expect.hasAssertions();
-
-    const customer = { firstName: "Peter" };
-
-    render(
-      <CustomerForm
-        original={customer}
-        onSubmit={({ firstName }) =>
-          expect(firstName).toEqual("Peter")
-        }
-      />
-    );
-
-    const button = element("input[type=submit]");
-
-    click(button);
   });
 
   it("prevents the default action when submitting the form", () => {
@@ -99,22 +122,5 @@ describe("CustomerForm", () => {
     const event = submit(form());
 
     expect(event.defaultPrevented).toBe(true);
-  });
-
-  it("updates firstname with firstname input value when submitted", () => {
-    expect.hasAssertions();
-
-    render(
-      <CustomerForm
-        original={blankCustomer}
-        onSubmit={({ firstName }) =>
-          expect(firstName).toEqual("Ikechukwu")
-        }
-      />
-    );
-
-    change(field("firstName"), "Ikechukwu");
-
-    click(submitButton());
   });
 });
