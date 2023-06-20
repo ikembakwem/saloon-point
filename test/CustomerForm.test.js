@@ -13,7 +13,11 @@ import {
 import { CustomerForm } from "../src/components/CustomerForm";
 
 describe("CustomerForm", () => {
-  const blankCustomer = { firstName: "" };
+  const blankCustomer = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+  };
 
   const itRendersAsATextBox = (fieldName) =>
     it("renders as a text box", () => {
@@ -45,7 +49,7 @@ describe("CustomerForm", () => {
       expect(label).not.toBeNull();
     });
 
-    it(`renders '${text}' as the first name label content`, () => {
+    it(`renders '${text}' as the ${fieldName} label content`, () => {
       render(<CustomerForm original={blankCustomer} />);
 
       const label = element(`label[for=${fieldName}]`);
@@ -64,16 +68,16 @@ describe("CustomerForm", () => {
     });
 
   const itSavesExistingValue = (fieldName, value) =>
-    it("saves existing first name ", () => {
+    it("saves existing value when submitted", () => {
       expect.hasAssertions();
 
-      const customer = { firstName: value };
+      const customer = { [fieldName]: value };
 
       render(
         <CustomerForm
           original={customer}
-          onSubmit={({ firstName }) =>
-            expect(firstName).toEqual(value)
+          onSubmit={(props) =>
+            expect(props[fieldName]).toEqual(value)
           }
         />
       );
@@ -90,8 +94,8 @@ describe("CustomerForm", () => {
       render(
         <CustomerForm
           original={blankCustomer}
-          onSubmit={({ firstName }) =>
-            expect(firstName).toEqual(value)
+          onSubmit={(props) =>
+            expect(props[fieldName]).toEqual(value)
           }
         />
       );
@@ -118,6 +122,30 @@ describe("CustomerForm", () => {
     itAssignsAnIdThatMatchesTheLabelFor("firstName");
     itSavesExistingValue("input[type=submit]", "Peter");
     itSubmitsNewValue("firstName", "Ikechukwu");
+  });
+
+  describe("last name field", () => {
+    itRendersAsATextBox("lastName");
+    itIncludesExistingValue("lastName", "Mbakwem");
+    itRendersALabel("lastName", "Last name");
+    itAssignsAnIdThatMatchesTheLabelFor("lastName");
+    itSavesExistingValue(
+      "input[type=submit]",
+      "Mbakwem"
+    );
+    itSubmitsNewValue("lastName", "Ikechukwu");
+  });
+
+  describe("phone number field", () => {
+    itRendersAsATextBox("phoneNumber");
+    itIncludesExistingValue("phoneNumber", "Mbakwem");
+    itRendersALabel("phoneNumber", "Phone number");
+    itAssignsAnIdThatMatchesTheLabelFor("phoneNumber");
+    itSavesExistingValue(
+      "input[type=submit]",
+      "08130794172"
+    );
+    itSubmitsNewValue("phoneNumber", "08130067300");
   });
 
   it("renders a submit button", () => {
