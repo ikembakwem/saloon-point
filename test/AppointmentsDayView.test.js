@@ -1,7 +1,14 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
-import { initializeContainer, render, click } from "./reactTestExtensions";
+import {
+  Appointment,
+  AppointmentsDayView,
+} from "../src/AppointmentsDayView";
+import {
+  initializeReactContainer,
+  render,
+  click,
+} from "./reactTestExtensions";
 
 describe("Appointment", () => {
   const blankCustomer = {
@@ -10,7 +17,7 @@ describe("Appointment", () => {
     phoneNumber: "",
   };
   beforeEach(() => {
-    initializeContainer();
+    initializeReactContainer();
   });
 
   const appointmentTable = () =>
@@ -58,32 +65,54 @@ describe("Appointment", () => {
   });
 
   it("renders the stylist name", () => {
-    render(<Appointment customer={blankCustomer} stylist="Shege" />);
+    render(
+      <Appointment
+        customer={blankCustomer}
+        stylist="Shege"
+      />
+    );
     expect(appointmentTable()).toContainText("Shege");
   });
 
   it("renders the salon service", () => {
-    render(<Appointment customer={blankCustomer} service="Cut" />);
+    render(
+      <Appointment customer={blankCustomer} service="Cut" />
+    );
     expect(appointmentTable()).toContainText("Cut");
   });
 
   it("renders another salon service", () => {
-    render(<Appointment customer={blankCustomer} service="Retouch" />);
+    render(
+      <Appointment
+        customer={blankCustomer}
+        service="Retouch"
+      />
+    );
     expect(appointmentTable()).toContainText("Retouch");
   });
 
   it("renders the appointment notes", () => {
     render(
-      <Appointment customer={blankCustomer} notes="Very friendly client" />
+      <Appointment
+        customer={blankCustomer}
+        notes="Very friendly client"
+      />
     );
-    expect(appointmentTable()).toContainText("Very friendly client");
+    expect(appointmentTable()).toContainText(
+      "Very friendly client"
+    );
   });
 
   it("renders other appointment notes", () => {
     render(
-      <Appointment customer={blankCustomer} notes="Client has allergies" />
+      <Appointment
+        customer={blankCustomer}
+        notes="Client has allergies"
+      />
     );
-    expect(appointmentTable()).toContainText("Client has allergies");
+    expect(appointmentTable()).toContainText(
+      "Client has allergies"
+    );
   });
 
   it("renders an h3 element", () => {
@@ -94,7 +123,12 @@ describe("Appointment", () => {
   it("renders the time as the heading", () => {
     const today = new Date();
     const timestamp = today.setHours(9, 0, 0);
-    render(<Appointment customer={blankCustomer} startsAt={timestamp} />);
+    render(
+      <Appointment
+        customer={blankCustomer}
+        startsAt={timestamp}
+      />
+    );
     expect(document.querySelector("h3")).toContainText(
       "Today's appointment at 09:00"
     );
@@ -104,17 +138,25 @@ describe("Appointment", () => {
 describe("AppointmentsDayView", () => {
   const today = new Date();
   const twoAppointments = [
-    { startsAt: today.setHours(12, 0), customer: { firstName: "Nathan" } },
-    { startsAt: today.setHours(14, 0), customer: { firstName: "Peter" } },
+    {
+      startsAt: today.setHours(12, 0),
+      customer: { firstName: "Nathan" },
+    },
+    {
+      startsAt: today.setHours(14, 0),
+      customer: { firstName: "Peter" },
+    },
   ];
 
   beforeEach(() => {
-    initializeContainer();
+    initializeReactContainer();
   });
 
   it("renders a div with the correct id", () => {
     render(<AppointmentsDayView appointments={[]} />);
-    expect(document.querySelector("div#appointmentsDayView")).not.toBeNull();
+    expect(
+      document.querySelector("div#appointmentsDayView")
+    ).not.toBeNull();
   });
 
   it("renders an ol to display appointments", () => {
@@ -124,13 +166,18 @@ describe("AppointmentsDayView", () => {
   });
 
   it("it renders an li for each appointment", () => {
-    render(<AppointmentsDayView appointments={twoAppointments} />);
-    const listChildren = document.querySelectorAll("ol > li");
+    render(
+      <AppointmentsDayView appointments={twoAppointments} />
+    );
+    const listChildren =
+      document.querySelectorAll("ol > li");
     expect(listChildren).toHaveLength(2);
   });
 
   it("renders the time of each appointment", () => {
-    render(<AppointmentsDayView appointments={twoAppointments} />);
+    render(
+      <AppointmentsDayView appointments={twoAppointments} />
+    );
     const listChildren = document.querySelectorAll("li");
     expect(listChildren[0]).toContainText("12:00");
     expect(listChildren[1]).toContainText("14:00");
@@ -144,33 +191,45 @@ describe("AppointmentsDayView", () => {
   });
 
   it("selects the first appointment by default", () => {
-    render(<AppointmentsDayView appointments={twoAppointments} />);
+    render(
+      <AppointmentsDayView appointments={twoAppointments} />
+    );
     expect(document.body).toContainText("Nathan");
   });
 
   it("has a button element in each li", () => {
-    render(<AppointmentsDayView appointments={twoAppointments} />);
-    const buttons = document.querySelectorAll("li > button");
+    render(
+      <AppointmentsDayView appointments={twoAppointments} />
+    );
+    const buttons =
+      document.querySelectorAll("li > button");
     expect(buttons).toHaveLength(2);
     expect(buttons[0].type).toContain("button");
   });
 
   it("renders another appointment when selected", () => {
-    render(<AppointmentsDayView appointments={twoAppointments} />);
-    const buttonTwo = document.querySelectorAll("button")[1];
+    render(
+      <AppointmentsDayView appointments={twoAppointments} />
+    );
+    const buttonTwo =
+      document.querySelectorAll("button")[1];
     click(buttonTwo);
     expect(document.body).toContainText("Peter");
   });
 
   it("adds toggled class to button when selected", () => {
-    render(<AppointmentsDayView appointments={twoAppointments} />);
+    render(
+      <AppointmentsDayView appointments={twoAppointments} />
+    );
     const button = document.querySelectorAll("button")[1];
     click(button);
     expect(button.className).toContain("toggled");
   });
 
   it("does not add toggle class if button is not selected", () => {
-    render(<AppointmentsDayView appointments={twoAppointments} />);
+    render(
+      <AppointmentsDayView appointments={twoAppointments} />
+    );
     const button = document.querySelectorAll("button")[1];
     expect(button.className).not.toContain("toggled");
   });
