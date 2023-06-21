@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const CustomerForm = ({
   original,
   onSubmit,
 }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(original);
+  const [customer, setCustomer] = useState(original);
+
+  const handleFirstNameChange = ({ target }) =>
+    setCustomer((customer) => ({
+      ...customer,
+      firstName: target.value,
+    }));
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onSubmit(customer);
   };
 
   return (
@@ -15,9 +23,9 @@ export const CustomerForm = ({
       <input
         type="text"
         name="firstName"
-        value={original.firstName}
+        value={customer.firstName}
         id="firstName"
-        readOnly
+        onChange={handleFirstNameChange}
       />
 
       <input type="submit" value="Add" />
